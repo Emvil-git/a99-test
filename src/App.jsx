@@ -1,8 +1,10 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react'
 import './App.css'
 import SearchBar from './components/SearchBar'
+import LaunchItem from './components/LaunchItem'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
-const LazyLaunch = lazy(() => import('./components/LaunchItem'));
+// const LazyLaunch = lazy(() => import('./components/LaunchItem'));
 
 function Loading() {
   return(
@@ -25,6 +27,7 @@ function App() {
   const [loadedLaunches, setloadedLaunches] = useState(5);
   const [totalLaunches, setTotalLaunches] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [filtLaunch, setFiltLaunch] = useState([]);
 
   useEffect(
     () => {
@@ -51,50 +54,68 @@ function App() {
       )
     },[])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isNearBottom =
-        window.innerHeight + window.scrollY >= document.querySelector(".launch-cont").offsetHeight - 384;
-      if (isNearBottom && loadedLaunches < totalLaunches) {
-        loadMore();
-      }
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const isNearBottom =
+  //       window.innerHeight + window.scrollY >= document.querySelector(".launch-cont").offsetHeight - 384;
+  //     if (isNearBottom && loadedLaunches < totalLaunches) {
+  //       loadMore();
+  //     }
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [loadedLaunches, totalLaunches]);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, [loadedLaunches, totalLaunches]);
 
 
   const loadMore = () => {
-        if (!isLoading) {
-      setIsLoading(true);
       setTimeout(() => {
         setloadedLaunches(prevloadedLaunches => prevloadedLaunches + 4);
-        setIsLoading(false);
-      }, 1000);
-    }
+      }, 2000);
   };
 
+  // const displayLaunches = () => {
+  //   if (launches.length !== 0) {
+  //     return (
+  //       <Suspense fallback={<Loading/>}>
+  //         {[...Array(loadedLaunches)].map((_, index) => (
+  //           <React.Fragment key={index}>
+  //             {index < filtLaunch.length ? (
+  //               <LazyLaunch key={index} launchInfo={filtLaunch[index]} />
+  //             ) : (
+  //               <span>No more data follows</span>
+  //             )}
+  //           </React.Fragment>
+  //           ))}
+  //       </Suspense>
+  //     )
+  //   } else {
+  //     return(
+  //       <Loading/>
+  //     )
+  //   }
+  // }
+
   const displayLaunches = () => {
-    if (launches.length !== 0) {
-      return (
-        <Suspense fallback={<Loading/>}>
-          {[...Array(loadedLaunches)].map((_, index) => (
-            <React.Fragment key={index}>
-              {index < launches.length ? (
-                <LazyLaunch key={index} launchInfo={launches[index]} />
-              ) : (
-                <span>No more data follows</span>
-              )}
-            </React.Fragment>
-            ))}
-        </Suspense>
+    if (launches.length !== 0){
+      return(
+        <InfiniteScroll
+          dataLength={loadedLaunches}
+          next={loadMore}
+          hasMore={loadedLaunches < totalLaunches}
+          loader={<Loading/>}
+          scrollableTarget='scroll-div'
+          >
+          {[...Array(loadedLaunches)].map((_, index) => {
+            return <LaunchItem key={index} launchInfo={launches[index]}/>
+          })}
+        </InfiniteScroll>
       )
     } else {
-      return(
+      return (
         <Loading/>
       )
     }
@@ -102,19 +123,12 @@ function App() {
   
   return (
     <div className='app'>
-      <SearchBar/>
-
-      <section className='launch-cont'>
+      <SearchBar launches={launches} setFiltLaunch={setFiltLaunch}/>
+      {console.log(filtLaunch)}
+      <section className='launch-cont' id='scroll-div'>
+        {/* {displayLaunches()} */}
         {displayLaunches()}
-        {/* {<Suspense fallback={<div>Loading...</div>}>
-          {[...Array(loadedLaunches)].map((_, index) => (
-            <LazyLaunch key={index} prop={launches[index]?.value} />
-            ))}
 
-          {loadedLaunches < totalIterations && (
-            <button onClick={loadMore}>Load More</button>
-          )}
-        </Suspense>} */}
       </section>
     </div>
   )
