@@ -117,13 +117,34 @@
   }
 }
 
-/* @keyframes sk-chase-dot-before {
+@keyframes sk-chase-dot-before {
   50% {
-    transform: scale(0.4);
+    opacity: 0.25;
   }
 
   100%,
   0% {
-    transform: scale(1.0);
+    opacity: 1;
   }
-} */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e9e9e9;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #757575;
+}
