@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './SearchBar.module.css';
 
-function SearchBar({launches ,setFiltLaunch}) {
+function SearchBar({launches ,setFiltLaunch, setTotalLaunches, setLoadedLaunches}) {
 
     const [filterTerm, setFilterTerm] = useState("");
 
@@ -10,12 +10,23 @@ function SearchBar({launches ,setFiltLaunch}) {
             if (launches.length !== 0){
                 if (filterTerm !== ""){
                     const filtLaunches = launches.filter(
-                        launch => launch.name.includes(filterTerm) || launch.details.includes(filterTerm)
+                        launch => launch.mission_name.toLowerCase().includes(filterTerm.toLowerCase())
                     )
 
+                    console.log(filtLaunches)
+
+                    if (filtLaunches.length < 5){
+                        setLoadedLaunches(filtLaunches.length)
+                    } else {
+                        setLoadedLaunches(5)
+                    }
+
                     setFiltLaunch([...filtLaunches]);
+                    setTotalLaunches(filtLaunches.length);
                 } else {
-                    setFiltLaunch([...launches])
+                    setFiltLaunch([...launches]);
+                    setTotalLaunches(launches.length);
+                    setLoadedLaunches(5);
                 }
             }
         },[filterTerm,launches]

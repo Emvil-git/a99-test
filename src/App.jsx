@@ -100,7 +100,7 @@ function App() {
   // }
 
   const displayLaunches = () => {
-    if (launches.length !== 0){
+    if (filtLaunch.length !== 0){
       return(
         <InfiniteScroll
           dataLength={loadedLaunches}
@@ -110,7 +110,7 @@ function App() {
           scrollableTarget='scroll-div'
           >
           {[...Array(loadedLaunches)].map((_, index) => {
-            return <LaunchItem key={index} launchInfo={launches[index]}/>
+            return <LaunchItem key={index} launchInfo={filtLaunch[index]}/>
           })}
         </InfiniteScroll>
       )
@@ -123,7 +123,7 @@ function App() {
   
   return (
     <div className='app'>
-      <SearchBar launches={launches} setFiltLaunch={setFiltLaunch}/>
+      <SearchBar launches={launches} setFiltLaunch={setFiltLaunch} setTotalLaunches={setTotalLaunches} setLoadedLaunches={setloadedLaunches}/>
       {console.log(filtLaunch)}
       <section className='launch-cont' id='scroll-div'>
         {/* {displayLaunches()} */}

@@ -7,4 +7,5 @@
 
 .search::placeholder{
     color: #757575;
+    font-style: italic;
 }
