@@ -108,6 +108,11 @@ function App() {
           hasMore={loadedLaunches < totalLaunches}
           loader={<Loading/>}
           scrollableTarget='scroll-div'
+          endMessage={
+          <p className='end'>
+            No more data to load.
+          </p>
+  }
           >
           {[...Array(loadedLaunches)].map((_, index) => {
             return <LaunchItem key={index} launchInfo={filtLaunch[index]}/>

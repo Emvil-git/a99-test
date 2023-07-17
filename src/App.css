@@ -17,8 +17,14 @@
   margin-top: 2rem;
   overflow-x: hidden;
   padding: 1.25rem 2.25rem;
-  padding-bottom: 0;
   overflow: auto;
+}
+
+.end{
+  text-align: center;
+  padding: 1rem;
+  font-size: 12px;
+  color: #757575;
 }
 
 /* SPINKIT FOR LOADING */

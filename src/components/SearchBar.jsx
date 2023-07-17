@@ -33,7 +33,10 @@ function SearchBar({launches ,setFiltLaunch, setTotalLaunches, setLoadedLaunches
     )
 
   return (
-    <input type="text" value={filterTerm} onChange={(ev) => {setFilterTerm(ev.target.value)}} id="dynamic-search" placeholder='Enter keywords' className={styles.search}/>
+    <div className={styles.searchcont}>
+        <input type="text" value={filterTerm} onChange={(ev) => {setFilterTerm(ev.target.value)}} id="dynamic-search" placeholder='Enter keywords' className={styles.search}/>
+        <button disabled={filterTerm===''} onClick={() => {setFilterTerm('')}} className={styles.btn}>Clear</button>
+    </div>
   )
 }
 
